@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
     <style>
 
-    </style>b
+    </style>
   </head>
   <body>
     <nav class="navbar bg-body-tertiary">
@@ -22,7 +22,20 @@
     </nav>
   
     <div id="vue-app">
-      
+      <h2>{{ name }}</h2>
+      <h2>{{ greet(' ,it"s a new day') }}</h2>
+      <a v-bind:href="website">The Net Ninja</a>
+      <input type="text"  v-bind:value="website" id="">
+      <p>I am {{ age }} years old</p>
+      <button class="btn btn-success" v-on:click="add">Add a Year</button>
+      <button class="btn btn-success" v-on:click="subtract">Subtract a Year</button>
+      <ol>
+        <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item"
+          v-bind:key="item.id"
+        ></todo-item>
+      </ol>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <script src="app.js"></script>
