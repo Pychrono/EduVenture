@@ -14,6 +14,7 @@
       {
         "list": "off"
       }
-    ]
+    ],
+    "meta-viewport": "off"
   }
 }
