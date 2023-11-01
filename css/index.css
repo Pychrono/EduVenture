@@ -1,4 +1,12 @@
-.first{
-    margin: 5px;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+.first {
+  margin: 5px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.tops {
+  max-width: 800px !important;
+  margin: auto;
+}
+.cart-icon {
+  position: relative;
+  cursor: pointer;
 }

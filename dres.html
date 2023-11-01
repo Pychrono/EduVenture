@@ -11,40 +11,58 @@
 </head>
 
 <body>
-        <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand">Scholars</a>
-            <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-            <a class="py-2 text-dark text-decoration-none" v-if="cart.length > 0" href="#"><i class="bi bi-cart"></i></a>
-            <div v-if="cart.length > 0" class="cart-icon"> <!-- Your cart icon code --> </div>
-
-          </nav
-        </div>
-        <div v-if="cart.length > 0" class="cart-icon">
-            <!-- Your cart icon code -->
-            <span class="cart-total">{{ cart.length }}</span>
-        </div>
-          
-    </nav>
     <div id="app">
+        <nav class="navbar bg-body-tertiary tops">
+            <div class="container-fluid">
+                <a class="navbar-brand">Scholars</a>
+                <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+                    <button class="rounded h-8 w-8 flex items-center justify-center bg-[#f5f5f5]"
+        :disabled="cart.length < 1" @click="changePage">
+  <i class="bi bi-bag"></i>
+  <span v-if="totalCartItems > 0" class="badge badge-pill badge-danger" style="color: #000 ;" >{{ totalCartItems }}</span>
+</button>
 
-        <h3 class="text-center">Activities</h3>
-        <div class="row">
-            <div class="col-3">
-                <input  type="text" placeholder="Search by title or location">
-                <button @click="sortByPrice">Sort by Price</button>
-                <button @click="sortBySpaces">Sort by Available Spaces</button>
+
+                </nav>
             </div>
-            <div class="row col-9">
-                <div v-for="item in classes" :key="item.id" class="card first col-3">
-                    <h5 class="card-title">Title: {{ item.title }}</h5>
-                    <p class="card-text">Price: {{ item.location }}</p>
-                    <p class="card-text">Price: {{ item.spaces }}</p>
-                    <p>Price: &pound;{{ item.price }}</p>
-                    <button class="btn btn-success"> Add to Cart</button>
+        </nav>
+
+        <div class="flex flex-wrap" v-if="viewActivities">
+            <h3 class="text-center">Activities</h3>
+            <div class="row">
+                <div class="col-3">
+                    <input v-model="searchQuery" type="text" placeholder="Search by title or location">
+                    <button @click="sortByPrice">Sort by Price</button>
+                    <button @click="sortBySpaces">Sort by Available Spaces</button>
+                </div>
+                <div class="row col-9">
+                    <div v-for="item in classes" :key="item.id" class="card first col-3">
+                        <h5 class="card-title">Title: {{ item.title }}</h5>
+                        <p class="card-text">Location: {{ item.location }}</p>
+                        <p class="card-text">Spaces: {{ item.availableSpaces }}</p>
+                        <p>Price: &pound;{{ item.price }}</p>
+                        <button class="btn btn-sm btn-success" @click="addToCart(item)"
+                            :disabled="item.disableAddToCart || item.purchasedSpaces === item.totalSpaces">
+                            Add to Cart
+                        </button>
+
+                    </div>a
                 </div>
             </div>
         </div>
+        <div class="flex flex-wrap" v-else>
+            <h3 class="text-center">Cart</h3>
+            <div v-for="item in cart" :key="item.id" class="card first col-3">
+              <h5 class="card-title">Title: {{ item.title }}</h5>
+              <p class="card-text">Location: {{ item.location }}</p>
+              <p class="card-text">Spaces: {{ item.purchasedSpaces }} / {{ item.totalSpaces }}</p>
+              <p class="card-text">Price: &pound;{{ item.price * item.purchasedSpaces }}</p>
+              <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from Cart</button>
+            </div>
+          </div>
+          
+
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
