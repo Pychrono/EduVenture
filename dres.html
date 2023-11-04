@@ -12,56 +12,82 @@
 
 <body>
     <div id="app">
-        <nav class="navbar bg-body-tertiary tops">
-            <div class="container-fluid">
-                <a class="navbar-brand">Scholars</a>
+        <nav class="navbar bg-body-tertiary" style="background-color: #2c3e50;">
+            <div class="container-fluid tops">
+                <a class="navbar-brand" style="color: #3498db; font-family: knight brush;"><h4 >EduVenture</h4></a>
                 <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
                     <button class="rounded h-8 w-8 flex items-center justify-center bg-[#f5f5f5]"
-        :disabled="cart.length < 1" @click="changePage">
-  <i class="bi bi-bag"></i>
-  <span v-if="totalCartItems > 0" class="badge badge-pill badge-danger" style="color: #000 ;" >{{ totalCartItems }}</span>
-</button>
+                        :disabled="cart.length < 1" @click="changePage">
+                        <i class="bi bi-cart"></i>
+                        <span v-if="totalCartItems > 0" class="badge badge-pill badge-danger" style="color: #000 ;">{{
+                            totalCartItems }}</span>
+                    </button>
 
 
                 </nav>
             </div>
         </nav>
 
-        <div class="flex flex-wrap" v-if="viewActivities">
-            <h3 class="text-center">Activities</h3>
+        <div class="flex flex-wrap" v-if="viewActivities"><br>
+            <h3 class="text-center">Activities</h3><br>
             <div class="row">
                 <div class="col-3">
                     <input v-model="searchQuery" type="text" placeholder="Search by title or location">
-                    <button @click="sortByPrice">Sort by Price</button>
-                    <button @click="sortBySpaces">Sort by Available Spaces</button>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Sort By
+                        </button>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item" @click="sortBy('title')">Title</a></li>
+                          <li><a class="dropdown-item" @click="sortBy('location')">Location</a></li>
+                          <li><a class="dropdown-item" @click="sortBy('price')">Price</a></li>
+                          <li><a class="dropdown-item" @click="sortBy('availableSpaces')">Available Spaces</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Dropdown button
+                        </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" @click="setOrder('asc')">Ascending</a></li>
+                                <li><a class="dropdown-item" @click="setOrder('desc')">Descending</a></li>                           
+                            </ul>
+                        
+                    </div>
                 </div>
+                
                 <div class="row col-9">
-                    <div v-for="item in classes" :key="item.id" class="card first col-3">
-                        <h5 class="card-title">Title: {{ item.title }}</h5>
+                    <div v-for="item in filteredItems" :key="item.title" class="card first col-4">
+                        <img :src="item.image" alt="Activity Image" class="card-img-top" />
+                        <div class="card-body">
+                             <h5 class="card-title">Title: {{ item.title }}</h5>
                         <p class="card-text">Location: {{ item.location }}</p>
                         <p class="card-text">Spaces: {{ item.availableSpaces }}</p>
                         <p>Price: &pound;{{ item.price }}</p>
-                        <button class="btn btn-sm btn-success" @click="addToCart(item)"
-                            :disabled="item.disableAddToCart || item.purchasedSpaces === item.totalSpaces">
+                        <button class="btn btn-sm text-light" style="background-color: #3498db;" @click="addToCart(item)"
+                            :disabled="item.isSoldOut || item.addedToCart && item.purchasedSpaces === item.totalSpaces">
                             Add to Cart
                         </button>
-
+                        </div>
+                       
                     </div>a
                 </div>
             </div>
         </div>
         <div class="flex flex-wrap" v-else>
             <h3 class="text-center">Cart</h3>
+            <div v-if="cart.length === 0" class="text-center mt-3">
+                <button class="btn btn-primary" @click="goToActivities">Go Back to Activities</button>
+              </div>
+              <div v-else>
             <div v-for="item in cart" :key="item.id" class="card first col-3">
-              <h5 class="card-title">Title: {{ item.title }}</h5>
-              <p class="card-text">Location: {{ item.location }}</p>
-              <p class="card-text">Spaces: {{ item.purchasedSpaces }} / {{ item.totalSpaces }}</p>
-              <p class="card-text">Price: &pound;{{ item.price * item.purchasedSpaces }}</p>
-              <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from Cart</button>
+                <h5 class="card-title">Title: {{ item.title }}</h5>
+                <p class="card-text">Location: {{ item.location }}</p>
+                <p class="card-text">Spaces: {{ item.purchasedSpaces }} / {{ item.totalSpaces }}</p>
+                <p class="card-text">Price: &pound;{{ item.price * item.purchasedSpaces }}</p>
+                <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from Cart</button>
             </div>
-          </div>
-          
-
+        </div>
 
     </div>
 

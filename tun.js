@@ -1,86 +1,86 @@
-
-console.log('Vue instance initialized')
+console.log("Vue instance initialized");
 new Vue({
   el: "#app",
   data() {
     return {
-      searchQuery: '',
+      searchQuery: "",
       viewActivities: true,
+      sortOrder: 1,
+      sortCriterion: "title",
       classes: [
         {
-          id: 1,
-          title: "English Language",
-          location: "Brent",
+          title: "Painting",
+          location: "Ealing",
           price: 50,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1455540904194-fc101941273a?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZW5nbGlzaHxlbnwwfHwwfHx8MA%3D%3D"
+          image:
+            "https://plus.unsplash.com/premium_photo-1664476936865-24bc3d21cd9c?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTd8fHBhaW50aW5nJTIwY2xhc3N8ZW58MHx8MHx8fDA%3D",
         },
         {
-          id: 2,
-          title: "Football Training",
-          location: "Hendon",
+          title: "Football Practice",
+          location: "Acton",
           price: 70,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1589487391730-58f20eb2c308?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Zm9vdGJhbGx8ZW58MHx8MHx8fDA%3D"
+          image:
+            "https://images.unsplash.com/photo-1600679472829-3044539ce8ed?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDJ8fEZvb3RiYWxsfGVufDB8fDB8fHww",
         },
         {
-          id: 3,
-          title: "Mathematics",
-          location: "Hackney",
+          title: "Cooking",
+          location: "Harrow",
           price: 150,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1613905780946-26b73b6f6e11?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG1hdGhzfGVufDB8fDB8fHww"
+          image:
+            "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y29va2luZyUyMGNsYXNzfGVufDB8fDB8fHww",
         },
         {
-          id: 4,
           title: "Music",
-          location: "Hackney",
+          location: "Wembley",
           price: 50,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fG11c2ljfGVufDB8fDB8fHww"
+          image:
+            "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzZ8fE11c2ljfGVufDB8fDB8fHww",
         },
         {
-          id: 5,
           title: "Dance Club",
-          location: "Brent",
+          location: "Romford",
           price: 80,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1519925610903-381054cc2a1c?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fGRhbmNlfGVufDB8fDB8fHww"
+          image:
+            "https://images.unsplash.com/photo-1524594152303-9fd13543fe6e?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fERhbmNpbmd8ZW58MHx8MHx8fDA%3D",
         },
         {
-          id: 6,
           title: "Chemisty",
-          location: "Brent",
+          location: "Stratford",
           price: 50,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hlbWlzdHJ5fGVufDB8fDB8fHww"
+          image:
+            "https://images.unsplash.com/photo-1603126857599-f6e157fa2fe6?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hlbWlzdHJ5fGVufDB8fDB8fHww",
         },
         {
-          id: 7,
           title: "Data Analysis",
           location: "Hendon",
           price: 90,
@@ -89,72 +89,103 @@ new Vue({
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fGJ1c2luZXNzfGVufDB8fDB8fHww"
+          image:
+            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fGJ1c2luZXNzfGVufDB8fDB8fHww",
         },
         {
-          id: 8,
           title: "Web Development",
-          location: "Brent",
+          location: "London Central",
           price: 200,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDB8fHdlYiUyMGRldmVsb3BtZW50fGVufDB8fDB8fHww"
+          image:
+            "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8d2ViJTIwZGV2ZWxvcG1lbnR8ZW58MHx8MHx8fDA%3D",
         },
         {
-          id: 9,
-          title: "Weight Lifting",
-          location: "Hendon",
+          title: "Yoga",
+          location:"Cricklewood",
           price: 40,
           totalSpaces: 5,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2VpZ2h0JTIwbGlmdGluZ3xlbnwwfHwwfHx8MA%3D%3D"
+          image:
+            "https://images.unsplash.com/photo-1588286840104-8957b019727f?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8eW9nYXxlbnwwfHwwfHx8MA%3D%3D",
         },
         {
-          id: 10,
           title: "Karate",
-          location: "Karate Town",
+          location: "China Town",
           price: 120,
           totalSpaces: 0,
           availableSpaces: 5,
           addedToCart: false,
           purchasedSpaces: 0,
           disableAddToCart: false,
-          image: "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8a2FyYXRlfGVufDB8fDB8fHww"
-        }
+          image:
+            "https://images.unsplash.com/photo-1514050566906-8d077bae7046?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8S2FyYXRlfGVufDB8fDB8fHww",
+        },
       ],
       cart: [],
-    }
+    };
   },
   computed: {
     filteredItems: function () {
       const query = this.searchQuery.toLowerCase();
-      return this.classes.filter(item => {
-        return item.title.toLowerCase().includes(query) || item.location.toLowerCase().includes(query);
-      });
+      return this.classes
+        .filter((item) => {
+          return (
+            item.title.toLowerCase().includes(query) ||
+            item.location.toLowerCase().includes(query)
+          );
+        })
+        .sort((a, b) => {
+          if (
+            this.sortCriterion === "title" ||
+            this.sortCriterion === "location"
+          ) {
+            return (
+              a[this.sortCriterion].localeCompare(b[this.sortCriterion]) *
+              (this.sortOrder === "asc" ? 1 : -1)
+            );
+          } else {
+            return (
+              (a[this.sortCriterion] - b[this.sortCriterion]) *
+              (this.sortOrder === "asc" ? 1 : -1)
+            );
+          }
+        });
     },
     totalCartItems() {
-      return this.cart.length;
-    }
-    
+      return this.cart.reduce((total, item) => total + item.purchasedSpaces, 0);
+    },
   },
+
   methods: {
     changePage: function () {
       this.viewActivities = !this.viewActivities;
     },
-    sortByPrice: function () {
-      this.classes.sort((a, b) => a.price - b.price);
+    sortBy(criteria) {
+      this.sortCriterion = criteria;
     },
-    sortBySpaces: function () {
-      this.classes.sort((a, b) => a.spaces - b.spaces);
+    sortBy(criteria) {
+      this.sortCriterion = criteria;
+      this.filteredItems.sort((a, b) => {
+        if (criteria === "title" || criteria === "location") {
+          return a[criteria].localeCompare(b[criteria]);
+        } else {
+          return a[criteria] - b[criteria];
+        }
+      });
+    },
+    toggleSortOrder() {
+      this.sortOrder *= -1;
     },
     addToCart(item) {
-      const cartItem = this.cart.find(cartItem => cartItem.id === item.id);
+      const cartItem = this.cart.find((cartItem) => cartItem.id === item.id);
       if (cartItem) {
         if (cartItem.purchasedSpaces < cartItem.totalSpaces) {
           cartItem.purchasedSpaces++;
@@ -168,18 +199,31 @@ new Vue({
           purchasedSpaces: 1,
         });
       }
-    },    
-    removeFromCart(item) {
-      const index = this.cart.indexOf(item);
-      if (index !== -1) {
-        this.cart.splice(index, 1);
-        item.addedToCart = false; // Reset addedToCart flag
-        item.availableSpaces++; // Increment availableSpaces
-        item.purchasedSpaces--; // Decrement purchasedSpaces
+      item.availableSpaces--; // Decrease available spaces
+
+      if (item.availableSpaces === 0) {
+        item.isSoldOut = true; // Set the item as sold out
       }
     },
-  
-    
-    
+    removeFromCart(item) {
+      const index = this.cart.findIndex((cartItem) => cartItem.id === item.id);
+      if (index !== -1) {
+        if (this.cart[index].purchasedSpaces > 0) {
+          const spacesToRemove = 1; // Define the number of spaces to remove
+          this.cart[index].purchasedSpaces -= spacesToRemove;
+          item.availableSpaces += spacesToRemove; // Increment available spaces
+          if (this.cart[index].purchasedSpaces === 0) {
+            this.cart.splice(index, 1);
+            item.addedToCart = false;
+          }
+        }
+      }
     },
+    setOrder(order) {
+      this.sortOrder = order;
+    },
+    goToActivities() {
+      this.viewActivities = true;
+    },
+  },
 });

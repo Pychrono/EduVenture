@@ -73,11 +73,11 @@ var classes = [
     },
     {
         id: 9,
-        title: "Weight Lifting",
+        title: "Yoga",
         location: "Hendon",
         price: 40,
         spaces: 5,
-        image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?auto=format&fit=crop&q=60&w=900&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8d2VpZ2h0JTIwbGlmdGluZ3xlbnwwfHwwfHx8MA%3D%3D"
+        image: "https://images.unsplash.com/photo-1593164842264-854604db2260?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHlvZ2F8ZW58MHx8MHx8fDA%3D"
     },
     {
         id: 10,
