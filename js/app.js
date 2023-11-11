@@ -51,7 +51,7 @@ new Vue({
         },
         isCheckoutFormValid() {
             // Basic validation
-            const nameRegex = /^[A-Za-z]+$/;
+            const nameRegex = /^[A-Za-z\s]+$/;
             const phoneRegex = /^[0-9]{10}$/;
 
             return (
@@ -95,7 +95,7 @@ new Vue({
             this.sortOrder *= -1;
         },
         checkoutAlert() {
-            alert(`Checkout successful! Total amount: &pound;${this.totalCheckoutValue}`);
+            alert(`Checkout successful! Total amount: £${this.totalCheckoutValue}`);
         },
         addToCart(item) {
             const cartItem = this.cart.find((cartItem) => cartItem.title === item.title);

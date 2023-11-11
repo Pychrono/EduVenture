@@ -1,4 +1,4 @@
-var classes = [{
+const classes = [{
         title: "Painting",
         location: "Ealing",
         price: 50,
