@@ -13,9 +13,13 @@ new Vue({
                 name: '',
                 phone: '',
             },
+            selectedSort: "Sort By",
         };
     },
     computed: {
+        totalCheckoutValue() {
+            return this.cart.reduce((total, item) => total + item.price * item.purchasedSpaces, 0);
+        },
         filteredItems: function() {
             const query = this.searchQuery.toLowerCase();
             return this.classes
@@ -64,6 +68,8 @@ new Vue({
         sortBy(criteria) {
             this.sortCriterion = criteria;
         },
+
+
         sortBy(criteria) {
             this.sortCriterion = criteria;
             this.filteredItems.sort((a, b) => {
@@ -73,25 +79,38 @@ new Vue({
                     return a[criteria] - b[criteria];
                 }
             });
+            this.selectedSort = this.getSortLabel(criteria);
+        },
+
+        getSortLabel(criteria) {
+            const labels = {
+                title: "Title",
+                location: "Location",
+                price: "Price",
+                availableSpaces: "Available Spaces",
+            };
+            return labels[criteria] || "Sort By";
         },
         toggleSortOrder() {
             this.sortOrder *= -1;
         },
+        checkoutAlert() {
+            alert(`Checkout successful! Total amount: &pound;${this.totalCheckoutValue}`);
+        },
         addToCart(item) {
-            const cartItem = this.cart.find((cartItem) => cartItem.id === item.id);
+            const cartItem = this.cart.find((cartItem) => cartItem.title === item.title);
 
             if (cartItem) {
                 // Item is already in the cart, increase purchasedSpaces
                 if (cartItem.purchasedSpaces < cartItem.totalSpaces) {
                     cartItem.purchasedSpaces++;
-                } else {
-                    alert("No more available spaces for this activity.");
                 }
             } else {
                 // Item is not in the cart, add it
                 this.cart.push({
                     ...item,
                     addedToCart: true,
+
                     purchasedSpaces: 1,
                 });
             }
@@ -106,12 +125,17 @@ new Vue({
 
 
         removeFromCart(item) {
-            const index = this.cart.findIndex((cartItem) => cartItem.id === item.id);
+            const index = this.cart.findIndex((cartItem) => cartItem.title === item.title);
             if (index !== -1) {
                 if (this.cart[index].purchasedSpaces > 0) {
-                    const spacesToRemove = 1; // Define the number of spaces to remove
-                    this.cart[index].purchasedSpaces -= spacesToRemove;
+                    const spacesToRemove = 1; // Remove one space at a time
                     item.availableSpaces += spacesToRemove; // Increment available spaces
+                    const lessonIndex = this.classes.findIndex((lesson) => lesson.title === item.title);
+                    if (lessonIndex !== -1) {
+                        this.classes[lessonIndex].availableSpaces += spacesToRemove;
+                        this.classes[lessonIndex].isSoldOut = false;
+                    }
+                    this.cart[index].purchasedSpaces -= spacesToRemove;
                     if (this.cart[index].purchasedSpaces === 0) {
                         this.cart.splice(index, 1);
                         item.addedToCart = false;
