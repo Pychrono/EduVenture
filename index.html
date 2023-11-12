@@ -4,19 +4,27 @@
 <head>
     <meta charset="UTF-8" />
     <title>EduVenture</title>
+
+    <!-- Bootstrap CSS and custom styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/index.css">
+
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+
+    <!-- External font -->
     <link href="https://www.dafontfree.net/embed/a25pZ2h0LWJydXNoLWRlbW8tcmVndWxhciZkYXRhLzk0L2svMTY3Nzg4L0tuaWdodF9CcnVzaF9EZW1vLm90Zg" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
     <div id="app">
-        <nav class="navbar bg-body-tertiary" style="background-color: #2c3e50;">
+        <!-- Navbar section -->
+        <nav class="navbar bg-body-tertiary" style="background-color:rgb(10, 53, 97);">
             <div class="container-fluid tops">
                 <a class="navbar-brand">
-                    <h2 style="color: #3498db; font-family: Knight Brush Demo;">EduVenture</h2>
+                    <h2 style="color: #83bee6; font-family: Knight Brush Demo;">EduVenture</h2>
                 </a>
+                <!-- Cart button in the navbar -->
                 <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
                     <button class="rounded h-8 w-8 flex items-center justify-center bg-[#f5f5f5]" :disabled="cart.length < 1" @click="changePage">
                         <i class="bi bi-cart"></i>
@@ -27,10 +35,12 @@
             </div>
         </nav>
 
+        <!-- Main content section -->
         <div class="flex flex-wrap" v-if="viewActivities"><br>
-            <h3 class="text-center">After School Classes</h3><br>
+            <h3 class="text-center text-light">After School Classes</h3><br>
             <div class="row">
                 <div class="col-3 p-4">
+                    <!-- Search input and sorting dropdowns -->
                     <label for="search">Search</label><br>
                     <input v-model="searchQuery" id="search" type="text" placeholder="Search by title or location" width="100%" height="20px"><br> <br>
                     <div class="dropdown">
@@ -38,6 +48,7 @@
                             {{ selectedSort }}
                         </button>
                         <ul class="dropdown-menu">
+                            <!-- Sorting options -->
                             <li><a class="dropdown-item" @click="sortBy('title')">Title</a></li>
                             <li><a class="dropdown-item" @click="sortBy('location')">Location</a></li>
                             <li><a class="dropdown-item" @click="sortBy('price')">Price</a></li>
@@ -52,73 +63,88 @@
                             <li><a class="dropdown-item" @click="setOrder('asc')">Ascending</a></li>
                             <li><a class="dropdown-item" @click="setOrder('desc')">Descending</a></li>
                         </ul>
-
                     </div>
                 </div>
 
+                <!-- Displaying search results -->
                 <div class="row col-9">
-                    <div v-for="item in filteredItems" id="searchResults" :key="item.title" class="card first col-4 p-2">
+                    <div v-for="item in filteredItems" id="searchResults" :key="item.title" class="card first col-3 p-2" style="background-color: #9aa4ab;">
                         <img :src="item.image" alt="Activity Image" class="card-img-top" />
                         <div class="card-body">
+                            <!-- Activity details -->
                             <h5 class="card-title">Title: {{ item.title }}</h5>
-                            <p class="card-text">Location: {{ item.location }}</p>
-                            <p class="card-text">Spaces: {{ item.availableSpaces }}</p>
-                            <p>Price: &pound;{{ item.price }}</p>
+                            <p class="card-text"> <strong>Location:</strong> {{ item.location }}</p>
+                            <p class="card-text"> <strong>Spaces:</strong> {{ item.availableSpaces }}</p>
+                            <p> <strong>Price:</strong> &pound;{{ item.price }}</p>
+                            <!-- Add to Cart button -->
                             <button class="btn btn-sm text-light" style="background-color: #3498db;" @click="addToCart(item)" :disabled="item.isSoldOut || item.addedToCart && item.purchasedSpaces === item.totalSpaces">
                                 Add to Cart
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Cart view -->
         <div class="" v-else>
+
             <h3 class="text-center">Cart</h3>
+            <!-- Display message if cart is empty -->
             <div v-if="cart.length === 0" class="text-center mt-3">
                 <button class="btn btn-primary" @click="goToActivities">Go Back to Activities</button>
             </div>
+            <!-- Displaying items in the cart -->
             <div v-else class="p-3 row">
                 <div class=" col-9">
                     <div v-for="item in cart" :key="item.title" class="card-body first col-4 p-3" style="display: inline-block;">
+                        <!-- Cart item details -->
                         <img :src="item.image" alt="Activity Image" class="card-img-top" />
                         <h5 class="card-title">Title: {{ item.title }}</h5>
                         <p class="card-text">Location: {{ item.location }}</p>
                         <p class="card-text">Spaces: {{ item.purchasedSpaces }} / {{ item.totalSpaces }}</p>
                         <p class="card-text">Price: &pound;{{ item.price * item.purchasedSpaces }}</p>
+                        <!-- Remove from Cart button -->
                         <button class="btn btn-sm btn-danger" @click="removeFromCart(item)">Remove from Cart</button>
                     </div>
                 </div>
+                <!-- Checkout form -->
                 <div class="col-3">
                     <div>
                         <h4>Checkout</h4>
                         <form @submit.prevent="submitOrder">
                             <div class="mb-3">
+                                <!-- Name input -->
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" v-model="checkoutForm.name" required>
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone Number</label>
-                                    <input type="tel" class="form-control" id="phone" v-model="checkoutForm.phone" pattern="[0-9]{10}" required>
-                                    <small class="text-muted">Please enter a valid 10-digit phone number.</small>
-                                </div>
-                                <h4>Total: &pound;{{ totalCheckoutValue }}</h4>
-                                <button type="submit" class="btn btn-primary" :disabled="!isCheckoutFormValid" @click="checkoutAlert">
-                                    Checkout
-                                </button>
+                            </div>
+                            <div class="mb-3">
+                                <!-- Phone number input -->
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" v-model="checkoutForm.phone" pattern="[0-9]{10}" required>
+                                <!-- Phone number validation message -->
+                                <small class="text-muted">Please enter a valid 10-digit phone number.</small>
+                            </div>
+                            <!-- Total value of items in the cart -->
+                            <h4>Total: &pound;{{ totalCheckoutValue }}</h4>
+                            <!-- Checkout button -->
+                            <button type="submit" class="btn btn-primary" :disabled="!isCheckoutFormValid" @click="checkoutAlert">
+                                Checkout
+                            </button>
                         </form>
-                        </div>
                     </div>
                 </div>
             </div>
-
-
-
         </div>
-        <script src="js/classes.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
-        <script src="js/app.js"></script>
+
+    </div>
+
+    <!-- External JavaScript and Bootstrap scripts -->
+    <script src="js/classes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>

@@ -1,7 +1,10 @@
+// Log initialization of Vue instance
 console.log("Vue instance initialized");
+
 new Vue({
     el: "#app",
     data() {
+        // Initial data setup
         return {
             searchQuery: "",
             viewActivities: true,
@@ -13,13 +16,15 @@ new Vue({
                 name: '',
                 phone: '',
             },
-            selectedSort: "Sort By",
+            selectedSort: "Sort By", // Default value for selected sort
         };
     },
     computed: {
+        // Calculate total value of items in the cart
         totalCheckoutValue() {
             return this.cart.reduce((total, item) => total + item.price * item.purchasedSpaces, 0);
         },
+        // Filter and sort items based on search and sorting criteria
         filteredItems: function() {
             const query = this.searchQuery.toLowerCase();
             return this.classes
@@ -46,13 +51,14 @@ new Vue({
                     }
                 });
         },
+        // Calculate total number of items in the cart
         totalCartItems() {
             return this.cart.reduce((total, item) => total + item.purchasedSpaces, 0);
         },
+        // Check if the checkout form is valid
         isCheckoutFormValid() {
-            // Basic validation
-            const nameRegex = /^[A-Za-z\s]+$/;
-            const phoneRegex = /^[0-9]{10}$/;
+            const nameRegex = /^[A-Za-z\s]+$/; // Allow full names with spaces
+            const phoneRegex = /^[0-9]{10}$/; // 10-digit phone number
 
             return (
                 nameRegex.test(this.checkoutForm.name) &&
@@ -62,14 +68,11 @@ new Vue({
     },
 
     methods: {
+        // Toggle between Activities and Cart view
         changePage: function() {
             this.viewActivities = !this.viewActivities;
         },
-        sortBy(criteria) {
-            this.sortCriterion = criteria;
-        },
-
-
+        // Set sorting criterion
         sortBy(criteria) {
             this.sortCriterion = criteria;
             this.filteredItems.sort((a, b) => {
@@ -79,9 +82,10 @@ new Vue({
                     return a[criteria] - b[criteria];
                 }
             });
+            // Update selectedSort based on the sorting criterion
             this.selectedSort = this.getSortLabel(criteria);
         },
-
+        // Get the label for the selected sorting criterion
         getSortLabel(criteria) {
             const labels = {
                 title: "Title",
@@ -91,12 +95,15 @@ new Vue({
             };
             return labels[criteria] || "Sort By";
         },
+        // Toggle sorting order
         toggleSortOrder() {
             this.sortOrder *= -1;
         },
+        // Display an alert for successful checkout
         checkoutAlert() {
             alert(`Checkout successful! Total amount: £${this.totalCheckoutValue}`);
         },
+        // Add an item to the cart
         addToCart(item) {
             const cartItem = this.cart.find((cartItem) => cartItem.title === item.title);
 
@@ -110,7 +117,6 @@ new Vue({
                 this.cart.push({
                     ...item,
                     addedToCart: true,
-
                     purchasedSpaces: 1,
                 });
             }
@@ -121,9 +127,7 @@ new Vue({
                 item.isSoldOut = true; // Set the item as sold out
             }
         },
-
-
-
+        // Remove an item from the cart
         removeFromCart(item) {
             const index = this.cart.findIndex((cartItem) => cartItem.title === item.title);
             if (index !== -1) {
@@ -143,17 +147,18 @@ new Vue({
                 }
             }
         },
+        // Set sorting order
         setOrder(order) {
             this.sortOrder = order;
         },
+        // Switch to Activities view
         goToActivities() {
             this.viewActivities = true;
         },
+        // Submit the order and display an alert
         submitOrder() {
             if (this.isCheckoutFormValid) {
-                // Process the order, e.g., display a confirmation message
                 alert(`Order submitted!\nName: ${this.checkoutForm.name}\nPhone: ${this.checkoutForm.phone}`);
-                // Reset the form after submission
                 this.checkoutForm.name = '';
                 this.checkoutForm.phone = '';
             } else {
