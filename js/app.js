@@ -1,78 +1,60 @@
-// Log initialization of Vue instance
 console.log("Vue instance initialized");
 
 new Vue({
     el: "#app",
     data() {
-        // Initial data setup
         return {
             searchQuery: "",
             viewActivities: true,
-            sortOrder: 1,
-            sortCriterion: "title",
-            classes: classes,
+            classes: [],
             cart: [],
             checkoutForm: {
                 name: '',
                 phone: '',
             },
-            selectedSort: "Sort By", // Default value for selected sort
+            selectedSort: "Sort By",
         };
     },
+    created() {
+        this.fetchClasses();
+    },
     computed: {
-        // Calculate total value of items in the cart
-        totalCheckoutValue() {
-            return this.cart.reduce((total, item) => total + item.price * item.purchasedSpaces, 0);
+        // ... existing computed properties ...
+        filteredItems() {
+            return this.classes; // For now, showing all classes. Will be updated with search functionality
         },
-        // Filter and sort items based on search and sorting criteria
-        filteredItems: function() {
-            const query = this.searchQuery.toLowerCase();
-            return this.classes
-                .filter((item) => {
-                    return (
-                        item.title.toLowerCase().includes(query) ||
-                        item.location.toLowerCase().includes(query)
-                    );
-                })
-                .sort((a, b) => {
-                    if (
-                        this.sortCriterion === "title" ||
-                        this.sortCriterion === "location"
-                    ) {
-                        return (
-                            a[this.sortCriterion].localeCompare(b[this.sortCriterion]) *
-                            (this.sortOrder === "asc" ? 1 : -1)
-                        );
-                    } else {
-                        return (
-                            (a[this.sortCriterion] - b[this.sortCriterion]) *
-                            (this.sortOrder === "asc" ? 1 : -1)
-                        );
-                    }
-                });
-        },
-        // Calculate total number of items in the cart
         totalCartItems() {
             return this.cart.reduce((total, item) => total + item.purchasedSpaces, 0);
         },
-        // Check if the checkout form is valid
+        totalCheckoutValue() {
+            return this.cart.reduce((total, item) => total + (item.price * item.purchasedSpaces), 0);
+        },
         isCheckoutFormValid() {
-            const nameRegex = /^[A-Za-z\s]+$/; // Allow full names with spaces
-            const phoneRegex = /^[0-9]{10}$/; // 10-digit phone number
-
+            // Example validation logic
             return (
-                nameRegex.test(this.checkoutForm.name) &&
-                phoneRegex.test(this.checkoutForm.phone)
+                this.checkoutForm.name.length > 0 &&
+                this.checkoutForm.phone.match(/^\d{10}$/) // Simple regex for 10-digit phone number
             );
         },
     },
-
+    watch: {
+        searchQuery(newQuery) {
+            this.performSearch();
+        }
+    },
     methods: {
-        // Toggle between Activities and Cart view
-        changePage: function() {
-            this.viewActivities = !this.viewActivities;
+        async fetchClasses() {
+            try {
+                const response = await fetch('http://localhost:3000/classes');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                this.classes = await response.json();
+            } catch (error) {
+                console.error('Error fetching classes:', error);
+            }
         },
-        // Set sorting criterion
+
         sortBy(criteria) {
             this.sortCriterion = criteria;
             this.filteredItems.sort((a, b) => {
@@ -147,23 +129,157 @@ new Vue({
                 }
             }
         },
-        // Set sorting order
         setOrder(order) {
             this.sortOrder = order;
         },
-        // Switch to Activities view
+        // Toggle between Activities and Cart view
         goToActivities() {
             this.viewActivities = true;
         },
-        // Submit the order and display an alert
-        submitOrder() {
-            if (this.isCheckoutFormValid) {
-                alert(`Order submitted!\nName: ${this.checkoutForm.name}\nPhone: ${this.checkoutForm.phone}`);
+        async submitOrder() {
+            try {
+                // Prepare order details
+                const orderDetails = {
+                    name: this.checkoutForm.name,
+                    phone: this.checkoutForm.phone,
+                    items: this.cart.map(item => ({
+                        id: item._id,
+                        purchasedSpaces: item.purchasedSpaces
+                    }))
+                };
+
+                // Send order details to backend
+                const orderResponse = await fetch('http://localhost:3000/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderDetails)
+                });
+
+                if (!orderResponse.ok) {
+                    throw new Error(`HTTP error! status: ${orderResponse.status}`);
+                }
+
+                // After successful order submission, update class spaces
+                for (const item of this.cart) {
+                    await this.updateClassSpace(item._id, item.availableSpaces - item.purchasedSpaces);
+                }
+
+                // Reset form and cart after successful submission
                 this.checkoutForm.name = '';
                 this.checkoutForm.phone = '';
-            } else {
-                alert('Please provide valid information.');
+                this.cart = [];
+
+                alert('Order submitted successfully!');
+            } catch (error) {
+                console.error('Error submitting order:', error);
             }
         },
-    },
+
+        async changePage() {
+            this.viewActivities = !this.viewActivities;
+        },
+        async submitOrder() {
+            try {
+                const orderDetails = {
+                    name: this.checkoutForm.name,
+                    phone: this.checkoutForm.phone,
+                    items: this.cart.map(item => ({ id: item._id, purchasedSpaces: item.purchasedSpaces })),
+                };
+
+                const response = await fetch('http://localhost:3000/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderDetails)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Handle post-order tasks here (e.g., updating class spaces, resetting form/cart)
+                // ...
+
+                alert('Order submitted successfully!');
+
+                // Reset form and cart after successful submission
+                this.checkoutForm.name = '';
+                this.checkoutForm.phone = '';
+                this.cart = [];
+
+            } catch (error) {
+                console.error('Error submitting order:', error);
+            }
+        },
+
+        async updateClassSpace(classId, newSpaces) {
+            try {
+                const updatedData = {
+                    availableSpaces: newSpaces
+                };
+
+                const response = await fetch(`http://localhost:3000/classes/${classId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const updatedClass = await response.json();
+                this.updateLocalClassData(updatedClass);
+                alert('Class updated successfully!');
+            } catch (error) {
+                console.error('Error updating class space:', error);
+            }
+        },
+
+        updateLocalClassData(updatedClass) {
+            const index = this.classes.findIndex(item => item._id === updatedClass._id);
+            if (index !== -1) {
+                this.classes.splice(index, 1, updatedClass);
+            }
+        },
+        async performSearch() {
+            try {
+                const response = await fetch(`http://localhost:3000/search?q=${encodeURIComponent(this.searchQuery)}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                this.classes = await response.json(); // Update the classes with the search result
+            } catch (error) {
+                console.error('Error performing search:', error);
+            }
+        },
+
+
+        async updateClassSpace(classId, purchasedSpaces) {
+            try {
+                const response = await fetch(`http://localhost:3000/classes/${classId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ purchasedSpaces })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Fetch updated class list
+                this.fetchClasses();
+            } catch (error) {
+                console.error('Error updating class space:', error);
+            }
+        },
+        // ... other methods like addToCart, removeFromCart, etc. ...
+    }
 });
