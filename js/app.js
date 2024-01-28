@@ -45,7 +45,7 @@ new Vue({
     methods: {
         async fetchClasses() {
             try {
-                const response = await fetch('https://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/classes');
+                const response = await fetch('http://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/classes');
                 if (!response.ok) {
                     throw new Error(`HTTPs error! status: ${response.status}`);
                 }
