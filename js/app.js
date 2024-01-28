@@ -45,7 +45,7 @@ new Vue({
     methods: {
         async fetchClasses() {
             try {
-                const response = await fetch('http://localhost:3000/classes');
+                const response = await fetch('http://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/classes');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -149,7 +149,7 @@ new Vue({
                 };
 
                 // Send order details to backend
-                const orderResponse = await fetch('http://localhost:3000/orders', {
+                const orderResponse = await fetch('http://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/orders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -188,7 +188,7 @@ new Vue({
                     items: this.cart.map(item => ({ id: item._id, purchasedSpaces: item.purchasedSpaces })),
                 };
 
-                const response = await fetch('http://localhost:3000/orders', {
+                const response = await fetch('http://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/orders', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -221,7 +221,7 @@ new Vue({
                     availableSpaces: newSpaces
                 };
 
-                const response = await fetch(`http://localhost:3000/classes/${classId}`, {
+                const response = await fetch(`http://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/classes/${classId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -249,7 +249,7 @@ new Vue({
         },
         async performSearch() {
             try {
-                const response = await fetch(`http://localhost:3000/search?q=${encodeURIComponent(this.searchQuery)}`);
+                const response = await fetch(`http://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/search?q=${encodeURIComponent(this.searchQuery)}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -262,7 +262,7 @@ new Vue({
 
         async updateClassSpace(classId, purchasedSpaces) {
             try {
-                const response = await fetch(`http://localhost:3000/classes/${classId}`, {
+                const response = await fetch(`http://testapp-env.eba-9yiukzwh.eu-north-1.elasticbeanstalk.com/classes/${classId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
